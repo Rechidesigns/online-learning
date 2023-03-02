@@ -53,6 +53,7 @@ urlpatterns = [
 urlpatterns += [
     # API base url
     path("api/", include("online_learning.users.api.urls")),
+    path("api/", include("books.api.urls")),
     # JWT Authorization URLs
     path('api/token/', TokenObtainPairView.as_view(), name='token_obtain_pair'),
     path('api/token/refresh/', TokenRefreshView.as_view(), name='token_refresh'),

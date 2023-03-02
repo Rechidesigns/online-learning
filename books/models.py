@@ -8,24 +8,25 @@ from online_learning.users.models import User
 
 
 class Category (models.Model):
-    name = models.CharField(
-        verbose_name= _('Category_name'),
+    category_option = models.CharField(
+        verbose_name= _('Category_option'),
         max_length= 225,
         null= False,
         blank= False,
         help_text= _('this name belongs to the category of the book')
     )
 
-    description = models.CharField(
-        verbose_name= _('description'),
-        max_length= 500,
-        null= True,
-        blank = True,
-        help_text= _('this is the description of the category of book')
+    active = models.BooleanField(
+        verbose_name=_("Active"),
+        default=False,
+        null=True,
+        blank=True,
+        help_text=_(" this indicates if the active option type is enabled or not ")
     )
 
+
     def __str__(self) -> str:
-        return self.name
+        return self.category_option
       
     class Meta:
         verbose_name = _("All Book Category")
@@ -45,7 +46,7 @@ class Books (BaseModel):
     this model holds the properties list for the owner
     """
 
-    books = models.ForeignKey(
+    author = models.ForeignKey(
         User, 
         on_delete = models.CASCADE,
         verbose_name = _('Author of the book'),
@@ -54,12 +55,10 @@ class Books (BaseModel):
         help_text=_(' this profile belongs to the author  who owns this book ')
     )
 
-    category = models.ForeignKey(
-        Category, on_delete=models.CASCADE,
-        verbose_name= _(' Book Category'),
-        null= False,
-        blank= False,
-        help_text= _(' this category name of the book')
+    category = models.ManyToManyField(
+        Category, 
+        verbose_name = _('Category Type '),
+        help_text=_("Category type refers to the type of the book based on the category")
     )
 
     title = models.CharField(
@@ -67,7 +66,7 @@ class Books (BaseModel):
         max_length= 250,
         null = True,
         blank= True,
-        help_text=_('the address one is basically the defualt address of the property')
+        help_text=_('this is the title of the book given  by the author')
     )
 
     book_description = models.TextField(
@@ -127,7 +126,7 @@ class Books (BaseModel):
 
 
     def __str__(self):
-        return str(self.Author)
+        return str(self.author)
 
     class Meta:
         ordering = ('-created_date',)
