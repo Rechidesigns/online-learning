@@ -3,6 +3,6 @@ from users.api import views
 
 urlpatterns = [
 
-    path('create-account', views.Register_Account.as_view() , name = 'create_account'),
+    path('create-account/', views.Register_Account.as_view() , name = 'create_account'),
     
 ]
