@@ -11,5 +11,5 @@ class BooksAdmin (admin.ModelAdmin):
 
 @admin.register( Category )
 class CategoryAdmin (admin.ModelAdmin):
-    list_display = ('category_option', 'active')
-    list_display_links = ('category_option', 'active')
+    list_display = ('category_name', 'active')
+    list_display_links = ('category_name', 'active')

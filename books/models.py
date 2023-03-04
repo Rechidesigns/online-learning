@@ -8,7 +8,7 @@ from online_learning.users.models import User
 
 
 class Category (models.Model):
-    category_option = models.CharField(
+    category_name = models.CharField(
         verbose_name= _('Category_option'),
         max_length= 225,
         null= False,
@@ -24,22 +24,18 @@ class Category (models.Model):
         help_text=_(" this indicates if the active option type is enabled or not ")
     )
 
-
-    def __str__(self) -> str:
-        return self.category_option
+    def __str__(self):
+        return self.category_name
       
+
     class Meta:
         verbose_name = _("All Book Category")
         verbose_name_plural = _("All Books Category")
 
 
 
-
-
-
 STATUS = (("Unpublished","Unpublished"), 
               ("Published","Published"))
-
 
 class Books (BaseModel):
     """
@@ -55,18 +51,20 @@ class Books (BaseModel):
         help_text=_(' this profile belongs to the author  who owns this book ')
     )
 
-    category = models.ManyToManyField(
-        Category, 
-        verbose_name = _('Category Type '),
-        help_text=_("Category type refers to the type of the book based on the category")
+    book_category = models.ForeignKey(
+        Category,
+        on_delete = models.CASCADE,
+        verbose_name = _('Category'),
+        null= True,
+        help_text =_("Category type refers to the type of the book based on the category")
     )
 
     title = models.CharField(
-        verbose_name= _('Title'),
-        max_length= 250,
+        verbose_name = _('Title'),
+        max_length = 250,
         null = True,
         blank= True,
-        help_text=_('this is the title of the book given  by the author')
+        help_text =_('this is the title of the book given  by the author')
     )
 
     book_description = models.TextField(
@@ -75,7 +73,6 @@ class Books (BaseModel):
         blank= True,
         help_text= _('the description of what the book is all about')
     )
-
 
     price = models.CharField(
         verbose_name= _('Book Price'),
@@ -124,9 +121,18 @@ class Books (BaseModel):
         help_text= _('Status of the book')
     )
 
+    date_time_added = models.DateTimeField(
+        verbose_name = _('Date & Time Added'),
+        auto_now_add= True,
+        null= True,
+        help_text= _('Date and time'),
+    )
+
+    # def __str__(self):
+    #     return str(self.author)
 
     def __str__(self):
-        return str(self.author)
+        return f"{self.author} {self.title} ({self.book_category})"
 
     class Meta:
         ordering = ('-created_date',)
